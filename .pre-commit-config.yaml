@@ -1,0 +1,59 @@
+# Hook revs were current as of writing; run `pre-commit autoupdate` after cloning.
+minimum_pre_commit_version: "3.5.0"
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+      - id: check-json
+      - id: check-toml
+      - id: check-added-large-files
+        args: [--maxkb=1024]
+      - id: check-merge-conflict
+      - id: detect-private-key
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.9
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
+
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.35.1
+    hooks:
+      - id: yamllint
+        args: [--strict, -c, .yamllint]
+
+  - repo: local
+    hooks:
+      # Runs from the project venv so it sees pydantic (plugin), pySigma and other real deps.
+      - id: mypy
+        name: mypy (strict, detectionforge/)
+        entry: mypy
+        language: system
+        types: [python]
+        files: ^detectionforge/
+        pass_filenames: false
+      - id: manifest-schema-fresh
+        name: rule manifest JSON Schema is up to date
+        entry: python -m detectionforge.schema.export --check
+        language: system
+        files: ^(detectionforge/schema/.*\.py|schema/rule_manifest\.schema\.json)$
+        pass_filenames: false
+      - id: dforge-validate
+        name: dforge validate
+        entry: dforge validate --attack-check off
+        language: system
+        files: ^rules/
+        pass_filenames: false
+      - id: dforge-test
+        name: dforge test (rules + examples)
+        entry: python -c "import subprocess,sys; sys.exit(max(subprocess.call(['dforge','test','--rules-dir',d]) for d in ('rules','examples/rules')))"
+        language: system
+        files: ^(rules|examples|mappings)/
+        pass_filenames: false
