@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=../../../../../schema/rule_manifest.schema.json
+# Schema test sample only. Not a validated detection.
+id: 6f1c2a9e-3b7d-4c8e-9a51-2d4f8b0c7e13
+title: DCSync-style directory replication request from non-DC
+version: "1.0.0"
+status: production
+author: Dhruv Singh
+created: 2026-11-01
+modified: 2026-11-14
+attack:
+  - T1003.006
+telemetry_contract:
+  source: windows-security
+  event_ids: [4662]
+  required_fields: [SubjectUserName, Properties, AccessMask]
+severity: high
+severity_rationale: Replication rights grant access to every domain credential hash.
+confidence: medium
+confidence_rationale: Legitimate sync tools (Entra Connect) produce identical events.
+known_false_positives:
+  - Microsoft Entra Connect sync account
+blind_spots:
+  - Requires DS-Access auditing on the domain object; absent by default.
+tuning_notes:
+  - Exclude known sync service accounts by SID, not by name.
+references:
+  - https://attack.mitre.org/techniques/T1003/006/
+tests:
+  - file: tests/positive_dcsync.json
+    type: positive
+    expected_matches: 1
+  - file: tests/negative_dc_replication.json
+    type: negative
+    expected_matches: 0
+  - file: tests/negative_entra_sync.json
+    type: negative
+    expected_matches: 0
