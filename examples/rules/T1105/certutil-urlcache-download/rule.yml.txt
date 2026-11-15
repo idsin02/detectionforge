@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=../../../../schema/rule_manifest.schema.json
+# Engine-proof example. Fixtures are hand-written synthetic events, not lab captures.
+id: 0b3d7a52-6f41-4c2e-9d8a-3e5f1c7b9a20
+title: Certutil used to download a file from a URL
+version: "0.1.0"
+status: experimental
+author: Dhruv Singh
+created: 2026-11-15
+modified: 2026-11-15
+attack:
+  - T1105
+telemetry_contract:
+  source: sysmon
+  event_ids: [1]
+  required_fields: [Image, OriginalFileName, CommandLine]
+severity: high
+severity_rationale: Living-off-the-land download of a remote payload onto the host.
+confidence: medium
+confidence_rationale: Admins occasionally fetch CRLs or CA files with certutil over HTTP.
+known_false_positives:
+  - Certificate or CRL retrieval by PKI administrators
+blind_spots:
+  - Renamed certutil.exe with OriginalFileName stripped
+  - Downloads via certutil COM or other LOLBins (bitsadmin, curl)
+tuning_notes:
+  - Allow-list internal PKI URLs, not the binary
+references:
+  - https://attack.mitre.org/techniques/T1105/
+  - https://lolbas-project.github.io/lolbas/Binaries/Certutil/
+tests:
+  - file: tests/positive_urlcache_download.json
+    type: positive
+    expected_matches: 3
+  - file: tests/negative_certutil_admin_usage.json
+    type: negative
+    expected_matches: 0
+  - file: tests/negative_other_downloaders.json
+    type: negative
+    expected_matches: 0

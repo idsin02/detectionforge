@@ -1,0 +1,24 @@
+{
+  "description": "Downloads by other tools whose command lines contain URLs and similar flags, but are not certutil.",
+  "source": "synthetic: hand-written Sysmon EID 1 events",
+  "expected_matches": 0,
+  "events": [
+    {
+      "EventID": 1,
+      "Image": "C:\\Windows\\System32\\curl.exe",
+      "OriginalFileName": "curl.exe",
+      "CommandLine": "curl.exe -o out.exe https://example.org/tool.exe"
+    },
+    {
+      "EventID": 1,
+      "Image": "C:\\Tools\\mycertutil.exe.bak",
+      "CommandLine": "mycertutil -urlcache http://example.org/x"
+    },
+    {
+      "EventID": 1,
+      "Image": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+      "OriginalFileName": "PowerShell.EXE",
+      "CommandLine": "powershell -c \"iwr https://example.org -OutFile x; echo urlcache\""
+    }
+  ]
+}

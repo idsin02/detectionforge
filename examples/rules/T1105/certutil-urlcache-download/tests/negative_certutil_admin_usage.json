@@ -1,0 +1,29 @@
+{
+  "description": "Benign certutil administration: hashing, decoding, URL cache flag without a URL, and an event with no CommandLine field at all.",
+  "source": "synthetic: hand-written Sysmon EID 1 events",
+  "expected_matches": 0,
+  "events": [
+    {
+      "EventID": 1,
+      "Image": "C:\\Windows\\System32\\certutil.exe",
+      "OriginalFileName": "CertUtil.exe",
+      "CommandLine": "certutil.exe -hashfile C:\\tools\\setup.msi SHA256"
+    },
+    {
+      "EventID": 1,
+      "Image": "C:\\Windows\\System32\\certutil.exe",
+      "OriginalFileName": "CertUtil.exe",
+      "CommandLine": "certutil -urlcache * delete"
+    },
+    {
+      "EventID": 1,
+      "Image": "C:\\Windows\\System32\\certutil.exe",
+      "OriginalFileName": "CertUtil.exe",
+      "CommandLine": "certutil -decode C:\\in.b64 C:\\out.bin"
+    },
+    {
+      "EventID": 1,
+      "Image": "C:\\Windows\\System32\\certutil.exe"
+    }
+  ]
+}

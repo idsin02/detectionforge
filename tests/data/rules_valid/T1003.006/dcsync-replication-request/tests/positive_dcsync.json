@@ -1,0 +1,6 @@
+{
+  "description": "Schema test sample (positive_dcsync)",
+  "source": "synthetic",
+  "expected_matches": 1,
+  "events": [{"EventID": 4662, "SubjectUserName": "sample", "Properties": "x", "AccessMask": "0x100"}]
+}

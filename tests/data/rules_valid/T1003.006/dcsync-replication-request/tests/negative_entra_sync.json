@@ -1,0 +1,6 @@
+{
+  "description": "Schema test sample (negative_entra_sync)",
+  "source": "synthetic",
+  "expected_matches": 0,
+  "events": [{"EventID": 4662, "SubjectUserName": "sample", "Properties": "x", "AccessMask": "0x100"}]
+}

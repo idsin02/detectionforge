@@ -1,0 +1,33 @@
+title: Certutil used to download a file from a URL
+id: 0b3d7a52-6f41-4c2e-9d8a-3e5f1c7b9a20
+status: experimental
+description: >
+  certutil.exe with -urlcache or -verifyctl and an http(s) URL on the command line.
+  Example rule shipped with the DetectionForge test engine (Part 3).
+references:
+  - https://attack.mitre.org/techniques/T1105/
+  - https://lolbas-project.github.io/lolbas/Binaries/Certutil/
+author: Dhruv Singh
+date: 2026-11-15
+tags:
+  - attack.command-and-control
+  - attack.t1105
+logsource:
+  product: windows
+  category: process_creation
+detection:
+  selection_img:
+    - Image|endswith: '\certutil.exe'
+    - OriginalFileName: 'CertUtil.exe'
+  selection_flag:
+    CommandLine|windash|contains:
+      - '-urlcache'
+      - '-verifyctl'
+  selection_url:
+    CommandLine|contains:
+      - 'http://'
+      - 'https://'
+  condition: all of selection_*
+falsepositives:
+  - Administrators retrieving certificate revocation lists or CA files over HTTP
+level: high
